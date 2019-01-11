@@ -17,12 +17,12 @@ stateModifier = function(state) {
 
 const reverse = string => {
     let result = "";
-    for (let character of string) result = character + result;
+    for (let character of string) result = result + character;
     return result;
 };
 
 const _reverse = string =>
-    string.split("").reduce((result, character) => character + result);
+    string.split("").reduce((result, character) => result + character);
 
     const isPalindrome = string => {
     const validCharacters = "abcdefghijklmnopqrstuvwxyz".split("");
