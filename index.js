@@ -12,6 +12,7 @@ const factorial = number => {
 
 stateModifier = function(state) {
   state = state + 'Text'
+  return state
 }
 
 const reverse = string => {
