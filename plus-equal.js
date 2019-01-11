@@ -3,13 +3,33 @@ stateModifier = function(state) {
   return state
 }
 
-const plusEqual = number => {
+const plusMinusEqual = number => {
   number = number + 1
+  number = number + 2
+  number = number + 3
   number++
   number += 1
   number = number - 1
+  number = number - 2
+  number = number - 3
   number --
   number -= 1
+  return number
+}
+
+const multiplyEqual = number => {
+  number = number * 2
+  number *= 2
+  number = number * 1
+  number *= 7
+  return number
+}
+
+const divideEqual = number => {
+  number = number / 2
+  number /= 2
+  number = number / 1
+  number /= 7
   return number
 }
 
