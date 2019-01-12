@@ -8,15 +8,22 @@
 
 import javascript
 
-predicate ineffecientVariableMutation (BinaryExpr expr, string operator) {
- expr instanceof AddExpr and operator = " += "
-  or expr instanceof SubExpr and operator = " -= "
-  or expr instanceof MulExpr and operator = " *= "
-  or expr instanceof DivExpr and operator = " /= "
+predicate ineffecientVariableMutation (BinaryExpr expr, string msg) {
+	expr.getRightOperand().(NumberLiteral).getIntValue() = 1 and
+	   ( expr instanceof AddExpr and msg = expr.getLeftOperand() + "++ could be used instead."
+	    or expr instanceof SubExpr and msg = expr.getLeftOperand() + "-- could be used instead."
+	    or expr instanceof MulExpr and msg = "This assignment has no effect."
+	    or expr instanceof DivExpr and msg = "This assignment has no effect." )
+	 or  
+	 expr.getRightOperand().(NumberLiteral).getIntValue() != 1 and
+	   ( expr instanceof AddExpr and msg = expr.getLeftOperand() + " += " + expr.getRightOperand() + " could be used instead."
+	    or expr instanceof SubExpr and msg = expr.getLeftOperand() + " -= " + expr.getRightOperand() + " could be used instead."
+	    or expr instanceof MulExpr and msg = expr.getLeftOperand() + " *= " + expr.getRightOperand() + " could be used instead."
+	    or expr instanceof DivExpr and msg = expr.getLeftOperand() + " /= " + expr.getRightOperand() + " could be used instead." ) 
 }
 
-from BinaryExpr binaryExpr, AssignExpr assignExpr, string operator
- where assignExpr.getLhs().(VarAccess).getVariable() = binaryExpr.getLeftOperand().(VarAccess).getVariable()
- and ineffecientVariableMutation(binaryExpr, operator)
- and assignExpr.getRhs() = binaryExpr
-select assignExpr, assignExpr.getLhs().(VarAccess).getVariable().getName() + operator + binaryExpr.getRightOperand() + " could be used instead."
+from BinaryExpr binaryExpr, AssignExpr assignExpr, string msg
+  	where assignExpr.getLhs().(VarAccess).getVariable() = binaryExpr.getLeftOperand().(VarAccess).getVariable()
+  	and ineffecientVariableMutation(binaryExpr, msg)
+  	and assignExpr.getRhs() = binaryExpr
+select assignExpr, msg
