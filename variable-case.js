@@ -15,3 +15,7 @@ plusequal(5)
 PlusEqual(5)
 
 Plusequal(5)
+
+let applePie = 5
+ApplePie = 6
+Applepie = 7
